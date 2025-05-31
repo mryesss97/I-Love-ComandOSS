@@ -48,7 +48,7 @@ export default function Recorder() {
     setTimeout(async () => {
       const sentence = originalText[currentSentenceIndex]
       const res = await recorderRef.current?.upload(sentence.text)
-      const submit = await submitAnswer(res.score, sentence?.id)
+      // const submit = await submitAnswer(res.score, sentence?.id)
       setResult(res)
     }, 1000);
   }
