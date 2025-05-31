@@ -1,17 +1,7 @@
-import Image, { type ImageProps } from "next/image";
-
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 h-screen bg-gray-100 dark:bg-gray-900">
-      check out the
-      <button>
-        record
-      </button>
-    </div>
-  );
+    <main className="flex min-h-screen items-center justify-center bg-blue-100">
+      <div className="bg-red-500 text-white p-4 rounded">Tailwind is working ✅</div>
+    </main>
+  )
 }

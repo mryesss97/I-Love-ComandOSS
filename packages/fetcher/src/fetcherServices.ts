@@ -1,6 +1,7 @@
 const SIGNATURE = "ALXaX/F5lx7TE0DzKucuFQEAcVydcO7I8wjoSmX/PLdwzwa+jsNdPIAFI7opG4SLyhW6p8SKMM1l+1Pwl4UtFgF1vBmH9uGyk1OMdmL1hnxVjYBSe9dxCIby4PmLywtesg=="
+
 export class Fetcher {
-  constructor(private baseUrl = 'http://localhost:9898') {}
+  constructor(private baseUrl = 'https://suiearnlish.onrender.com') {}
 
   async get<T = any>(path: string, headers: HeadersInit = {}) {
     const res = await fetch(`${this.baseUrl}${path}`, {
