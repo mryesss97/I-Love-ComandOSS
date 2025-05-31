@@ -102,7 +102,7 @@ export default function Recorder() {
 
   const handleGetLeaderboard = async () => {
     const service = new LessonService()
-    const leaderboard = await service.getLeaderboard()
+    const leaderboard = await service.getLeaderboard(currentAccount?.address)
   }
   return (
     <div className="p-4 space-y-4">

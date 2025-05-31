@@ -56,8 +56,9 @@ export const getUserLessonScore = async (
 ): Promise<void> => {
   try {
     const userAddress = req.query.address as string;
+
     if (!userAddress) {
-      res.status(401).json({ error: 'Unauthorized' });
+      res.status(400).json({ error: 'Missing address in query' });
       return;
     }
 
@@ -69,47 +70,85 @@ export const getUserLessonScore = async (
       return;
     }
 
+    const allUserScores = await prisma.answer.groupBy({
+      by: ['userId'],
+      _sum: { score: true },
+      orderBy: { _sum: { score: 'desc' } },
+    });
+
+    const currentUserScore = allUserScores.find(
+      (entry) => entry.userId === user.id
+    );
+
+    const rank =
+      allUserScores.findIndex((entry) => entry.userId === user.id) + 1;
+
     const answers = await prisma.answer.findMany({
       where: { userId: user.id },
     });
 
-    const totalScore = answers.reduce((sum, a) => sum + a.score, 0);
-    res.json({ totalScore, count: answers.length });
+    const totalScore = currentUserScore?._sum.score || 0;
+
+    res.json({
+      totalScore,
+      count: answers.length,
+      rank,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const getLeaderboard = async (_req: Request, res: Response) => {
+export const getLeaderboard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const leaderboard = await prisma.answer.groupBy({
+    const address = req.query.address as string | undefined;
+
+    const allScores = await prisma.answer.groupBy({
       by: ['userId'],
-      _sum: {
-        score: true,
-      },
-      orderBy: {
-        _sum: {
-          score: 'desc',
-        },
-      },
-      take: 10,
+      _sum: { score: true },
+      orderBy: { _sum: { score: 'desc' } },
     });
 
-    const enriched = await Promise.all(
-      leaderboard.map(async (entry) => {
+    const leaderboard = await Promise.all(
+      allScores.slice(0, 10).map(async (entry, index) => {
         const user = await prisma.user.findUnique({
           where: { id: entry.userId },
         });
+
         return {
-          wallet: user?.wallet,
-          totalScore: entry._sum.score,
+          rank: index + 1,
+          wallet: user?.wallet || 'Unknown',
+          score: entry._sum.score,
         };
       })
     );
 
-    res.json({ leaderboard: enriched });
+    let currentUser = null;
+
+    if (address) {
+      const user = await prisma.user.findUnique({
+        where: { wallet: address },
+      });
+
+      if (user) {
+        const rankIndex = allScores.findIndex((s) => s.userId === user.id);
+        const score = allScores[rankIndex]?._sum.score || 0;
+
+        currentUser = {
+          rank: rankIndex + 1,
+          wallet: address,
+          score,
+        };
+      }
+    }
+
+    res.json({ leaderboard, currentUser });
   } catch (err) {
     console.error('[getLeaderboard]', err);
-    res.status(500).json({ error: 'Failed to load leaderboard' });
+    next(err);
   }
 };
