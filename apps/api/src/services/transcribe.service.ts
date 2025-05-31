@@ -50,10 +50,6 @@ export const handleTranscribe = async (
       ...result,
     });
   } catch (error) {
-    console.error(
-      'OpenAI Whisper error:',
-      error?.response?.data || error.message
-    );
     res.status(500).json({ error: 'Failed to transcribe audio' });
   }
 };

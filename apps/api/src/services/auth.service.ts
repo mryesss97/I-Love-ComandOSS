@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { verifySuiMessage } from '../utils/verify-sui';
 import { prisma } from '../lib/prisma';
-import { MESSAGE_SIGNING_KEY } from '../config/env';
 
 export const verifyLogin = async (
   req: Request,
@@ -11,7 +10,6 @@ export const verifyLogin = async (
 
   try {
     const { isValid, userAddress: recoveredAddress } = await verifySuiMessage({
-      message: MESSAGE_SIGNING_KEY,
       signature,
       address,
     });
