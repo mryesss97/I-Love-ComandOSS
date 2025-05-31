@@ -1,15 +1,23 @@
-const express = require('express');
-import type { Request, Response } from 'express';
+import express from 'express';
+import cors from 'cors';
+import transcribeRoute from './routes/transcribe.route';
+import dotenv from 'dotenv';
+import resultRoute from './routes/result.route';
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const port = 9898;
 
+
+
+app.use(cors());
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello from API 👋');
-});
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+app.use('/api/result', resultRoute);
+
+app.use('/api/transcribe', transcribeRoute);
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
