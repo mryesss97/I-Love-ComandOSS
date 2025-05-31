@@ -17,7 +17,7 @@ export const compareText = (original: string, transcribed: string) => {
   const accuracy = (correct / originalWords.length) * 100;
 
   return {
-    accuracy: Math.round(accuracy),
+    score: Math.round(accuracy),
     mistakes: incorrectWords,
     feedback:
       incorrectWords.length === 0

@@ -8,9 +8,10 @@ export const verifySignatureMiddleware = (
   next: NextFunction
 ) => {
   const signature = req.headers['x-signature'] as string;
-  const { message, address } = req.body;
+  console.log("signature ==>>", signature);
+  const { address } = req.body;
 
-  verifySuiMessage({ message, signature, address })
+  verifySuiMessage({ signature, address })
     .then(({ isValid, userAddress }) => {
       if (!isValid || !isSameAddress(address, userAddress)) {
         return res

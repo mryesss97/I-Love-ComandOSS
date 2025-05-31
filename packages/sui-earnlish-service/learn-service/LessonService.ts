@@ -3,11 +3,12 @@ export class LessonService {
   constructor(private fetcher: IFetcher = new Fetcher()) {}
 
   async submitLessonScore(data: {
-    lessonId: string;
+    sentenceId: string;
     score: number;
-    walletAddress: string;
+    address: string;
   }) {
-    return this.fetcher.post('/api/lessons/submit', data);
+    console.log("walletAddress", {data})
+    return this.fetcher.post('/api/lesson/submit', data);
   }
 
   async getLeaderboard() {

@@ -1,18 +1,16 @@
 import { verifyPersonalMessageSignature } from '@mysten/sui/verify';
+import { MESSAGE_SIGNING_KEY } from '../config/env';
 
 export const verifySuiMessage = async ({
-  message,
   signature,
   address,
 }: {
-  message: string;
   signature: string;
   address: string;
 }) => {
   try {
-  console.log("**************************")
 
-    const messageEncoded = new TextEncoder().encode(message);
+    const messageEncoded = new TextEncoder().encode(MESSAGE_SIGNING_KEY);
     const publicKey = await verifyPersonalMessageSignature(
       messageEncoded,
       signature

@@ -11,7 +11,6 @@ export const handleTranscribe = async (
 ): Promise<void> => {
   const audioFile = req.file;
   const { originalText } = req.body;
-
   if (!audioFile || !originalText) {
     res.status(400).json({ error: 'Missing audio or originalText' });
     return;
@@ -39,7 +38,11 @@ export const handleTranscribe = async (
 
     // Step 2: Compare
     const result = compareText(originalText, transcribedText);
-    console.log("whisperRes ===>>", {whisperRes: whisperRes?.data, originalText, result});
+    console.log('whisperRes ===>>', {
+      whisperRes: whisperRes?.data,
+      originalText,
+      result,
+    });
 
     // Step 3: Return feedback
     res.json({
@@ -47,7 +50,10 @@ export const handleTranscribe = async (
       ...result,
     });
   } catch (error) {
-    console.error("OpenAI Whisper error:", error?.response?.data || error.message);
+    console.error(
+      'OpenAI Whisper error:',
+      error?.response?.data || error.message
+    );
     res.status(500).json({ error: 'Failed to transcribe audio' });
   }
 };

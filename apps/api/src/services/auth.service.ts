@@ -7,7 +7,6 @@ export const verifyLogin = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  console.log("**************************", req.body)
   const { signature, address } = req.body;
 
   try {
@@ -15,10 +14,6 @@ export const verifyLogin = async (
       message: MESSAGE_SIGNING_KEY,
       signature,
       address,
-    });
-    console.log('[verifyLogin] Result from verifySuiMessage:', {
-      isValid,
-      recoveredAddress,
     });
 
     if (!isValid || address.toLowerCase() !== recoveredAddress.toLowerCase()) {

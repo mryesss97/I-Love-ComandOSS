@@ -18,13 +18,11 @@ export const getSentences = async (
   }
 };
 
-
 export const submitAnswer = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<void> => {
-  const { sentenceId, score } = req.body;
-  const address = req.user?.address;
+  const { sentenceId, score, address } = req.body;
 
   if (!address) {
     res.status(401).json({ error: 'Unauthorized' });

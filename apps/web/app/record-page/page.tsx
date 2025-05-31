@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Sentence, VoiceRecorderService } from '@sui-earnlish-service'
+import { LessonService, Sentence, VoiceRecorderService } from '@sui-earnlish-service'
 import { ConnectButton, useCurrentAccount, useSignPersonalMessage } from '@mysten/dapp-kit';
 import { AuthenticationService } from 'apps/web/services/authen';
 
@@ -47,6 +47,9 @@ export default function Recorder() {
     setAudioUrl(recorderRef.current?.audioUrl || '')
     setTimeout(async () => {
       const res = await recorderRef.current?.upload(renderSentence)
+      console.log("res", { res, renderSentence, originalText, currentSentenceIndex })
+      const submit = await submitAnswer(res.score, originalText[currentSentenceIndex]?.id)
+      console.log("submit answer", submit)
       setResult(res)
     }, 1000);
   }
@@ -77,8 +80,14 @@ export default function Recorder() {
     );
   }
 
-  const submitAnswer = async (score: number) => {
-
+  const submitAnswer = async (score: number, sentenceId: number) => {
+    const service = new LessonService()
+    const response = await service.submitLessonScore({
+      sentenceId: sentenceId.toString(),
+      score,
+      address: currentAccount?.address || '',
+    })
+    console.log("response ***", response)
   }
   return (
     <div className="p-4 space-y-4">
@@ -102,7 +111,7 @@ export default function Recorder() {
       {result && (
         <div className="bg-gray-100 p-2 rounded">
           <p><strong>Transcript:</strong> {result.transcribedText}</p>
-          <p><strong>Score:</strong> {result.accuracy}</p>
+          <p><strong>Score:</strong> {result.score}</p>
 
           <p><strong>Feedback:</strong> {result.feedback}</p>
         </div>

@@ -47,7 +47,6 @@ export class Fetcher {
       method: 'POST',
       body: formData,
       headers: {
-        'Content-Type': 'application/json',
         'x-signature': SIGNATURE,
       },
     });
