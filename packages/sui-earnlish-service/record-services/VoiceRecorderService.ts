@@ -1,5 +1,12 @@
 import { type IFetcher, Fetcher } from '@suiEarnLish/fetcher';
 
+export type Sentence = {
+  id: string;
+  text: string;
+  level: number;
+  createdAt: string; // ISO date string
+};
+
 export class VoiceRecorderService {
   private mediaRecorder: MediaRecorder | null = null;
   private audioChunks: Blob[] = [];
@@ -38,19 +45,27 @@ export class VoiceRecorderService {
     }
   }
 
-  async upload(originalText: string): Promise<any> {
-    console.log('this.audioBlob', this.audioBlob);
-    if (!this.audioBlob) throw new Error('No audio recorded yet.');
-    const endpoint: string = '/api/transcribe';
-    const formData = new FormData();
-    formData.append('file', this.audioBlob, 'recording.webm');
-    formData.append('originalText', originalText);
+  async getRandomSentence(): Promise<Sentence[]> {
+    const res = await this.fetcher.get<Sentence[]>(
+      '/api/lesson/sentences'
+    );
+    return res;
+  }
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      body: formData,
+  async upload(
+    originalText: string,
+    endpoint: string = '/api/transcribe'
+  ): Promise<any> {
+    if (!this.audioBlob) throw new Error('No audio recorded yet.');
+
+    const file = new File([this.audioBlob], 'voice.webm', {
+      type: 'audio/webm',
     });
 
-    return response.json();
+    const response = await this.fetcher.upload(endpoint, file, 'audio', {
+      originalText,
+    });
+
+    return response;
   }
 }

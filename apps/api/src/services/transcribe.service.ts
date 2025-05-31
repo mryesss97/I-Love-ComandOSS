@@ -5,7 +5,10 @@ import FormData from 'form-data';
 import { OPENAI_API_KEY } from '../config/env';
 import { compareText } from '../utils/compare';
 
-export const handleTranscribe = async (req: Request, res: Response): Promise<void> => {
+export const handleTranscribe = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const audioFile = req.file;
   const { originalText } = req.body;
 
@@ -18,7 +21,8 @@ export const handleTranscribe = async (req: Request, res: Response): Promise<voi
   const formData = new FormData();
   formData.append('file', fs.createReadStream(audioFile.path));
   formData.append('model', 'whisper-1');
-
+  formData.append('language', 'en');
+  formData.append('prompt', 'This is an English pronunciation task.');
   try {
     const whisperRes = await axios.post(
       'https://api.openai.com/v1/audio/transcriptions',
@@ -31,19 +35,19 @@ export const handleTranscribe = async (req: Request, res: Response): Promise<voi
       }
     );
 
-    const transcribedText = whisperRes.data.text;
+    const transcribedText = whisperRes?.data?.text;
 
     // Step 2: Compare
     const result = compareText(originalText, transcribedText);
+    console.log("whisperRes ===>>", {whisperRes: whisperRes?.data, originalText, result});
 
     // Step 3: Return feedback
     res.json({
       transcribedText,
       ...result,
     });
-
   } catch (error) {
-    console.error(error);
+    console.error("OpenAI Whisper error:", error?.response?.data || error.message);
     res.status(500).json({ error: 'Failed to transcribe audio' });
   }
 };

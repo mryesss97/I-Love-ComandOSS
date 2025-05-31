@@ -9,23 +9,39 @@ datasource db {
 
 model User {
   id        String   @id @default(cuid())
-  name      String
-  email     String?  @unique
+  wallet    String   @unique
   createdAt DateTime @default(now())
-
-  results   Result[]
+  Result    Result[]
 }
 
 model Result {
-  id           String   @id @default(cuid())
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String
-  type         ResultType  // "LISTENING" or "SPEAKING"
-  score        Int
-  submittedAt  DateTime @default(now())
+  id          String     @id @default(cuid())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  type        ResultType // "LISTENING" or "SPEAKING"
+  score       Int
+  submittedAt DateTime   @default(now())
 }
 
 enum ResultType {
   LISTENING
   SPEAKING
+}
+
+model Sentence {
+  id        String   @id @default(cuid())
+  text      String
+  level     Int      @default(1)
+  createdAt DateTime @default(now())
+  answers   Answer[]
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  userId     String
+  sentenceId String
+  score      Int
+  createdAt  DateTime @default(now())
+
+  sentence Sentence @relation(fields: [sentenceId], references: [id])
 }
