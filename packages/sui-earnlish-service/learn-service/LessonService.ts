@@ -7,11 +7,17 @@ export class LessonService {
     score: number;
     address: string;
   }) {
-    console.log("walletAddress", {data})
+    console.log('walletAddress', { data });
     return this.fetcher.post('/api/lesson/submit', data);
   }
 
   async getLeaderboard() {
-    return this.fetcher.get('/api/leaderboard');
+    return this.fetcher.get('/api/lesson/leaderboard');
   }
+
+  async getLessonScoreByUser(address: string): Promise<{ score: number }> {
+    return this.fetcher.get(`/api/lesson/score?address=${address}`);
+  }
+
+ 
 }

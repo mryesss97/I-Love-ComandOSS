@@ -8,7 +8,6 @@ export const verifySignatureMiddleware = (
   next: NextFunction
 ) => {
   const signature = req.headers['x-signature'] as string;
-  console.log("signature ==>>", signature);
   const { address } = req.body;
 
   verifySuiMessage({ signature, address })
