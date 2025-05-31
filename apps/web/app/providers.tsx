@@ -8,7 +8,7 @@ import { useState } from 'react'
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
   const { networkConfig } = createNetworkConfig({
-    localnet: { url: getFullnodeUrl('testnet') },
+    localnet: { url: getFullnodeUrl('devnet') },
     mainnet: { url: getFullnodeUrl('mainnet') },
   });
 
