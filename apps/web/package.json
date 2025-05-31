@@ -21,22 +21,16 @@
     "lucide-react": "^0.511.0",
     "next": "^15.3.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "tailwind-merge": "^3.3.0"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@sui-earnlish-service": "workspace:^",
-    "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
-    "autoprefixer": "^10.4.21",
     "eslint": "^9.27.0",
-    "postcss": "^8.5.4",
-    "tailwindcss": "^4.1.8",
-    "tw-animate-css": "^1.3.2",
     "typescript": "5.8.2"
   }
 }
