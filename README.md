@@ -62,14 +62,14 @@ NEXT_PUBLIC_MESSAGE=Sign to login to SuiEarnLish
 
 ### 4. Start Development
 
-In one terminal:
+In one terminal to run server:
 ```bash
-pnpm --filter api dev
+pnpm dev:server
 ```
 
-In another terminal:
+In another terminal to run web app:
 ```bash
-pnpm --filter web dev
+pnpm web:dev
 ```
 
 ## 🕉️ Authentication
