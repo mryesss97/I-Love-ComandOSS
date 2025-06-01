@@ -19,9 +19,8 @@ export const compareText = (original: string, transcribed: string) => {
   return {
     score: Math.round(accuracy),
     mistakes: incorrectWords,
-    feedback:
-      incorrectWords.length === 0
-        ? 'Great job! You pronounced all words correctly.'
-        : `You mispronounced ${incorrectWords.join(', ')}. Try again!`,
+    feedback: !incorrectWords.length
+      ? 'Great job! You pronounced all words correctly.'
+      : `You mispronounced ${incorrectWords.join(', ')}. Try again!`,
   };
 };

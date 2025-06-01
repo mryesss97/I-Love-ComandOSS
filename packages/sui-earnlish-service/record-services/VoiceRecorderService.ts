@@ -7,14 +7,29 @@ export type Sentence = {
   createdAt: string; // ISO date string
 };
 
+export type ResultType = {
+  score: number;
+  text: string;
+  sentenceId: string;
+  transcribedText: string;
+  mistakes: string[];
+  feedback: string;
+};
+
 export class VoiceRecorderService {
   private mediaRecorder: MediaRecorder | null = null;
   private audioChunks: Blob[] = [];
   private stream: MediaStream | null = null;
-  private fetcher: IFetcher = new Fetcher();
-
+  private fetcher: IFetcher;
   public audioBlob: Blob | null = null;
   public audioUrl: string | null = null;
+  
+  constructor({
+    signature,
+    baseUrl,
+  }: { signature?: string; baseUrl?: string } = {}) {
+    this.fetcher = new Fetcher(baseUrl, signature);
+  }
 
   async start() {
     this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -46,24 +61,27 @@ export class VoiceRecorderService {
   }
 
   async getRandomSentence(): Promise<Sentence[]> {
-    const res = await this.fetcher.get<Sentence[]>(
-      '/api/lesson/sentences'
-    );
+    const res = await this.fetcher.get<Sentence[]>({
+      path: '/api/lesson/sentences',
+    });
     return res;
   }
 
   async upload(
     originalText: string,
     endpoint: string = '/api/transcribe'
-  ): Promise<any> {
+  ): Promise<ResultType> {
     if (!this.audioBlob) throw new Error('No audio recorded yet.');
 
     const file = new File([this.audioBlob], 'voice.webm', {
       type: 'audio/webm',
     });
 
-    const response = await this.fetcher.upload(endpoint, file, 'audio', {
-      originalText,
+    const response = await this.fetcher.upload({
+      path: endpoint,
+      file,
+      fieldName: 'audio',
+      extraFields: { originalText },
     });
 
     return response;

@@ -9,7 +9,7 @@ export const verifySuiMessage = async ({
   address: string;
 }) => {
   try {
-
+    console.log("MESSAGE_SIGNING_KEY **", {MESSAGE_SIGNING_KEY, signature, address});
     const messageEncoded = new TextEncoder().encode(MESSAGE_SIGNING_KEY);
     const publicKey = await verifyPersonalMessageSignature(
       messageEncoded,

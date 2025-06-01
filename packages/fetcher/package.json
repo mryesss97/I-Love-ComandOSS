@@ -4,5 +4,8 @@
   "main": "src/index.js",
   "scripts": {
     "build": "tsc"
+  },
+  "dependencies": {
+    "@suiEarnlish/utils": "workspace:^"
   }
 }

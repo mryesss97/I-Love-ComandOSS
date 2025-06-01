@@ -38,11 +38,6 @@ export const handleTranscribe = async (
 
     // Step 2: Compare
     const result = compareText(originalText, transcribedText);
-    console.log('whisperRes ===>>', {
-      whisperRes: whisperRes?.data,
-      originalText,
-      result,
-    });
 
     // Step 3: Return feedback
     res.json({
