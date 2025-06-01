@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { getLocalStorage, getSignature, StorageKeys } from '@suiEarnLish/utils';
 
-const MAX_LESSONS = 1
+const MAX_LESSONS = 2
 const MAX_SCORE = MAX_LESSONS * 100;
 
 type LessonContextType = {

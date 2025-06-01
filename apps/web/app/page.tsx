@@ -55,6 +55,12 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24 bg-red-100">
+      <h1>Welcome to suiEarnLish</h1>
+      <p className='text-gray-500'>Learn English with Sui</p>
+      {!isReady && (
+        <p className='text-gray-500'>Please sign in to start learning</p>
+
+      )}
       <ConnectButton connectText="Signin" />
       {isReady && (
         <Button className='mt-2' onClick={goToLesson} >
