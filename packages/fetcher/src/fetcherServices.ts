@@ -4,7 +4,7 @@ export class Fetcher {
   private baseUrl: string;
   private signature?: string | null;
 
-  constructor(baseUrl = 'http://localhost:9898', signature?: string) {
+  constructor(baseUrl = 'https://suiearnlish.onrender.com', signature?: string) {
     this.baseUrl = baseUrl;
     this.signature =
       signature || (getLocalStorage(StorageKeys.SIGNATURE) as string);

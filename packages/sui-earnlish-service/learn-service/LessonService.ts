@@ -20,7 +20,7 @@ export class LessonService {
   fetcher: IFetcher;
   constructor({
     signature,
-    baseUrl = 'http://localhost:9898',
+    baseUrl = 'https://suiearnlish.onrender.com',
   }: {
     signature?: string;
     baseUrl?: string;
