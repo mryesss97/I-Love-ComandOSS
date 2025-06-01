@@ -43,6 +43,7 @@ export default function Home() {
           }).catch((err) => {
             console.error("verify user error", err)
             setIsLoading(false)
+            setIsReady(true)
           })
         },
       },
