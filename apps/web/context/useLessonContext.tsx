@@ -1,8 +1,11 @@
-import { LessonService, ResultType, Sentence, VoiceRecorderService } from 'packages/sui-earnlish-service';
+import { LessonService, ResultType, Sentence, VoiceRecorderService } from '@sui-earnlish-service';
 import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
 import { get } from 'lodash-es';
-import { useAccounts, useCurrentAccount } from '@mysten/dapp-kit';
-import { getLocalStorage, StorageKeys } from '@suiEarnLish/utils';
+import { useCurrentAccount } from '@mysten/dapp-kit';
+import { getLocalStorage, getSignature, StorageKeys } from '@suiEarnLish/utils';
+
+const MAX_LESSONS = 1
+const MAX_SCORE = MAX_LESSONS * 100;
 
 type LessonContextType = {
   recordService: VoiceRecorderService;
@@ -16,6 +19,8 @@ type LessonContextType = {
   currentResult: any;
   currentAccount: ReturnType<typeof useCurrentAccount>;
   setTotalScore: (score: number) => void;
+  MAX_LESSONS: number;
+  MAX_SCORE: number;
 };
 
 const LessonContext = createContext<LessonContextType>({} as LessonContextType);
@@ -39,7 +44,7 @@ export const LessonProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const initService = async () => {
-    const signature = getLocalStorage(StorageKeys.SIGNATURE) as string;
+    const signature = getLocalStorage(StorageKeys.SIGNATURE) as string
     const service = new VoiceRecorderService(
       {
         signature,
@@ -52,8 +57,14 @@ export const LessonProvider = ({ children }: { children: ReactNode }) => {
     })
     setRecordService(service);
     setLessonService(lesson);
-    const sentence = await service.getRandomSentence();
+    const response = await service.getRandomSentence();
+    const sentence = await getRandomLesson(response);
     setLessons(sentence);
+  }
+
+  const getRandomLesson = async (less: Sentence[]): Promise<Sentence[]> => {
+    const shuffled = [...less].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, MAX_LESSONS);
   }
 
   return (
@@ -68,7 +79,9 @@ export const LessonProvider = ({ children }: { children: ReactNode }) => {
       setCurrentResult,
       currentResult,
       currentAccount,
-      setTotalScore
+      setTotalScore,
+      MAX_LESSONS,
+      MAX_SCORE
     }}
     >
       {children}

@@ -1,84 +1,106 @@
-# Turborepo starter
+# 🎓 SuiEarnLish — Learn English, Earn Rewards
 
-This Turborepo starter is maintained by the Turborepo core team.
+**SuiEarnLish** is a Web3-powered English learning app where users practice English speaking and listening, earn points, and receive rewards via the SUI blockchain.
 
-## Using this example
+## 🚀 Features
 
-Run the following command:
+- 🎧 **Listen-to-Earn**: Listen to dialogues and fill in missing words. Earn points for each correct answer. (coming soon)
+- 🗣️ **Speak-to-Earn**: Read out sample sentences. The AI will evaluate pronunciation and give feedback and scores.
+- 🏆 **Leaderboard**: Compete with other learners weekly and monthly based on total score.
+- 🏱 **Rewards**: Top learners receive token rewards or NFTs as certificates of learning. (coming soon)
+- 🔐 **Wallet Auth**: Authenticate using your SUI wallet with message signature.
+- 📊 **Progress Tracking**: Monitor your lesson progress and pronunciation improvement.
 
-```sh
-npx create-turbo@latest
-```
+## 🛠️ Tech Stack
 
-## What's inside?
+- **Frontend**: Next.js 15, TailwindCSS, TypeScript, Radix UI
+- **Backend**: Node.js + Express, Prisma ORM, SQLite
+- **Web3**: SUI Wallet (via `@mysten/dapp-kit`), Wallet signature-based authentication
+- **Voice API**: OpenAI Whisper API (for speech-to-text transcription)
+- **CI/CD**: Vercel / Render for deployment
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 🛆 Monorepo Structure
 
 ```
-cd my-turborepo
-pnpm build
+apps/
+  web/        # Frontend app
+  api/        # Backend server
+  contracts/  # Contract app
+packages/
+  fetcher/    # Shared fetch service (with auth headers)
+  sui-earnlish-service # Shared service relate to learn
+  sui-service # Shared service relate to web3 and blockchain
+  ui          # Shared component common to re-use 
+  utils       # Shared some common function & utils 
 ```
 
-### Develop
+## 📝 How to Run Locally
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
+### 1. Clone the Repo
+```bash
+git clone https://github.com/mryesss97/I-Love-ComandOSS.git
 ```
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+### 2. Install Dependencies
+```bash
+pnpm install
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### 3. Setup `.env` Files
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
+#### For `apps/api/.env`:
 ```
-npx turbo link
+PORT=9898
+OPENAI_API_KEY=your_openai_api_key
 ```
 
-## Useful Links
+#### For `apps/web/.env`:
+```
+NEXT_PUBLIC_API_URL=http://localhost:9898
+NEXT_PUBLIC_MESSAGE=Sign to login to SuiEarnLish
+```
 
-Learn more about the power of Turborepo:
+### 4. Start Development
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+In one terminal:
+```bash
+pnpm --filter api dev
+```
+
+In another terminal:
+```bash
+pnpm --filter web dev
+```
+
+## 🕉️ Authentication
+
+Users sign a message with their SUI wallet. The backend verifies the signature and uses the wallet address as a user identifier.
+
+## 📚 Lessons
+
+- Lessons include multiple sample sentences.
+- Scores are recorded for each sentence.
+- Voice is transcribed via Whisper and compared to the original text.
+
+## 📊 Scoring and Leaderboard
+
+- Each correct listening answer and speaking attempt earns points.
+- The total score is calculated per user.
+- Leaderboard is ranked based on accumulated points.
+
+## 💡 Future Improvements
+
+- Multi-language support
+- Gamified learning experience
+- NFT certificates with unique artwork
+- Social features for learner collaboration
+
+## 🧑‍💻 Authors
+
+- @yourname (An Được) - Frontend & Backend developer
+- OpenAI Whisper API for transcription
+- SUI dApp Kit for wallet integration
+
+---
+
+Feel free to contribute or fork this project. Let’s build a better way to learn and earn together! 🌍🎧

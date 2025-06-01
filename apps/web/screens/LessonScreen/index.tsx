@@ -1,10 +1,13 @@
-import React, { useEffect, useMemo } from 'react'
+import React from 'react'
 import LessonProgress from './components/LessonProgress'
 import { useLessonContext } from 'apps/web/context/useLessonContext'
 import { get } from 'lodash-es'
 import Record from './components/Record'
 import Feedback from './components/Feedback'
 import { ResultType } from 'packages/sui-earnlish-service'
+import { Button } from "@radix-ui/themes";
+import Congratulation from './components/Congratulation'
+import { useRouter } from 'next/navigation'
 
 const LessonScreen = () => {
   const {
@@ -20,10 +23,7 @@ const LessonScreen = () => {
     setCurrentResult
   } = useLessonContext()
 
-
-  useEffect(() => {
-    console.log("currentResult in LessonScreen:", currentResult)
-  }, [currentResult])
+  const router = useRouter()
 
   const handleNextLesson = async () => {
     lessonService.submitLessonScore({
@@ -32,10 +32,12 @@ const LessonScreen = () => {
       address: currentAccount?.address || '',
     }).then(res => {
       setTotalScore(totalScore + (currentResult?.score || 0))
-
+      if (currentLessonIndex === lessons.length - 1) {
+        router.push('/leaderboard')
+      }
+      setCurrentLessonIndex(currentLessonIndex + 1)
+      setCurrentResult({} as ResultType)
     })
-    setCurrentLessonIndex(currentLessonIndex + 1)
-    setCurrentResult({} as ResultType)
 
   }
 
@@ -54,14 +56,17 @@ const LessonScreen = () => {
           <Feedback />
         )}
       </div>
-      <button
-        disabled={!get(currentResult, 'feedback', 0) || currentLessonIndex >= lessons.length - 1}
-        onClick={handleNextLesson}
-        className="bg-blue-500 text-white px-4 py-2 rounded 
-             disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
-      >
-        Next Lesson
-      </button>
+      {currentLessonIndex === lessons.length - 1 ? (
+        <Congratulation handleFinish={handleNextLesson} />
+      ) : (
+        <Button
+          disabled={!get(currentResult, 'feedback', 0)}
+          onClick={handleNextLesson}
+        >
+          Next Lesson
+        </Button>
+      )}
+
 
     </div>
   )

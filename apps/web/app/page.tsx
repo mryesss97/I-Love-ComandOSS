@@ -3,21 +3,23 @@ import { ConnectButton, useCurrentAccount, useSignPersonalMessage } from '@myste
 import { useEffect, useState } from 'react';
 import { AuthenticationService } from '../services/authen';
 import { useRouter } from 'next/navigation'
-import { setLocalStorage, StorageKeys } from '@suiEarnLish/utils';
-
+import { getSignature, saveSignature, setLocalStorage, StorageKeys } from '@suiEarnLish/utils';
+import { Button } from '@radix-ui/themes';
+import { usePrevious } from '../hooks/usePrevious';
 
 export default function Home() {
   const router = useRouter()
   const { mutate: signPersonalMessage } = useSignPersonalMessage();
   const currentAccount = useCurrentAccount();
 
-
   const [isLoading, setIsLoading] = useState(false)
-
+  const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    if (currentAccount) {
-      handleSignin()
+    if (currentAccount?.address) {
+      setTimeout(() => {
+        handleSignin()
+      }, 100);
     }
   }, [currentAccount])
 
@@ -32,19 +34,16 @@ export default function Home() {
       },
       {
         onSuccess: (result) => {
-          console.log("result signature", { result, message, address: currentAccount?.address })
           setLocalStorage(StorageKeys.SIGNATURE, result.signature)
           service.verifyUser({
             address: currentAccount?.address || '',
             signature: result.signature,
           }).then((res) => {
-            console.log("response from verify user", res)
-            goToLesson()
+            setIsReady(true)
           }).catch((err) => {
             console.error("verify user error", err)
             setIsLoading(false)
           })
-
         },
       },
     );
@@ -56,13 +55,14 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24 bg-red-100">
-      <div>
-        {/* {!currentAccount ? <>adasd</> : (
-          <ConnectButton connectText="Signin" />
+      <ConnectButton connectText="Signin" />
+      {isReady && (
+        <Button className='mt-2' onClick={goToLesson} >
+          Start Learning
+        </Button>
+      )}
 
-        )} */}
-        <ConnectButton connectText="Signin" />
-      </div>
+
     </div>
 
   )

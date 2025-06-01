@@ -1,7 +1,7 @@
 import { stripQuotes } from './function';
 
 export enum StorageKeys {
-  SIGNATURE = 'signature',
+  SIGNATURE = 'wallet_signatures',
 }
 
 export const setLocalStorage = (key: StorageKeys, value: any) => {
@@ -24,8 +24,9 @@ export const removeLocalStorage = (key: StorageKeys) => {
 export const getLocalStorage = (key: StorageKeys) => {
   try {
     const value = localStorage.getItem(key);
-    return stripQuotes(value || '');
+    return value ? stripQuotes(value) : null;
   } catch (err) {
     console.error(`[storage] Failed to set ${key}:`, err);
+    return null;
   }
 };

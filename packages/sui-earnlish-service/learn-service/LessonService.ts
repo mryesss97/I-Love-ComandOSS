@@ -1,4 +1,21 @@
 import { IFetcher, Fetcher } from '@suiEarnLish/fetcher';
+
+export type currentUserEntry = {
+  rank: number;
+  wallet: string;
+  score: number;
+};
+
+export type LeaderBoardItem = {
+  rank: number;
+  wallet: string;
+  score: number;
+};
+
+export type LeaderboardEntry = {
+  currentUser: currentUserEntry;
+  leaderboard: LeaderBoardItem[];
+};
 export class LessonService {
   fetcher: IFetcher;
   constructor({
@@ -19,7 +36,7 @@ export class LessonService {
     return this.fetcher.post({ path: '/api/lesson/submit', body: data });
   }
 
-  async getLeaderboard(address?: string) {
+  async getLeaderboard(address?: string): Promise<LeaderboardEntry> {
     return this.fetcher.get({
       path: `/api/lesson/leaderboard?address=${address}`,
     });
