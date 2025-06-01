@@ -56,7 +56,7 @@ OPENAI_API_KEY=your_openai_api_key
 
 #### For `apps/web/.env`:
 ```
-NEXT_PUBLIC_API_URL=http://localhost:9898
+NEXT_PUBLIC_API_URL=https://suiearnlish.onrender.com
 NEXT_PUBLIC_MESSAGE=Sign to login to SuiEarnLish
 ```
 
@@ -97,7 +97,7 @@ Users sign a message with their SUI wallet. The backend verifies the signature a
 
 ## 🧑‍💻 Authors
 
-- @yourname (An Được) - Frontend & Backend developer
+- @mryesss - Frontend & Backend (fresher) developer
 - OpenAI Whisper API for transcription
 - SUI dApp Kit for wallet integration
 

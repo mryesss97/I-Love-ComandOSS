@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# 📱 SuiEarnLish – Frontend
 
-## Getting Started
+This is the **frontend** app of the `SuiEarnLish` project – a learn-to-earn English platform built on the **SUI Blockchain**.  
+It provides users with interactive lessons to practice **listening and speaking**, and earn rewards based on their performance.
 
-First, run the development server:
+---
+
+## 🧱 Tech Stack
+
+- **Next.js 15 (App Router)**
+- **TypeScript**
+- **Tailwind CSS**
+- **Radix-ui** for UI components
+- **@mysten/dapp-kit** for SUI wallet integration
+- **Custom Fetcher** service for API interaction
+
+---
+
+## 🚀 Getting Started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 1. Install dependencies
+pnpm install
+
+# 2. Start the dev server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Make sure the backend is running at `http://localhost:9898` or adjust `Fetcher`'s `baseUrl`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+## 📁 Project Structure
 
-## Learn More
+```
+apps/
+  web/
+    app/              # App router pages (Next.js 15)
+    components/       # UI components
+    context/          # React contexts (e.g. LessonContext)
+    services/         # VoiceRecorderService, LessonService, etc.
+    hooks/            # Custom React hooks
+    utils/            # Utility functions (e.g. localStorage helpers)
+    styles/           # Global styles and Tailwind config
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔐 Authentication Flow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Users connect their **SUI wallet** via `@mysten/dapp-kit`
+- Signature is stored in `localStorage` as `{ address: signature }`
+- All authenticated requests auto-attach the correct signature via `Fetcher`
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧠 Core Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 🔊 **Listen & Speak** to earn scores
+- 🎙️ Record and upload speech via `VoiceRecorderService`
+- 🧠 Get real-time feedback from backend (OpenAI Whisper)
+- 📈 View leaderboard & personal performance
+- 🔐 Connect wallet & authenticate securely
+
+---
+
+## 📦 Environment Variables
+
+Create a `.env` file in `apps/web/`:
+
+```env
+NEXT_PUBLIC_MESSAGE="Sign to login to SuiEarnLish"
+NEXT_PUBLIC_API="http://localhost:9898"
+```
+
+---
+
+## ✨ Dev Tips
+
+- Use `Fetcher` for all API interactions
+- Store per-user auth in localStorage `{ address: signature }`
+- Use `@/` alias to import from shared packages
